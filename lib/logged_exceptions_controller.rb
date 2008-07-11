@@ -29,7 +29,7 @@ class LoggedExceptionsController < ActionController::Base
     end
     unless params[:controller_actions_filter].blank?
       conditions << 'controller_name = ? AND action_name = ?'
-      parameters += params[:controller_actions_filter].split('/').collect(&:downcase)
+      parameters += params[:controller_actions_filter].split('/').collect(&:underscore)
     end
     @exceptions = LoggedException.paginate :order => 'created_at desc', :per_page => 30, 
       :conditions => conditions.empty? ? nil : parameters.unshift(conditions * ' and '), :page => params[:page]
